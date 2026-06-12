@@ -79,6 +79,9 @@ class FirestorePactGateway(
                 FIELD_NAME to pactName,
                 FIELD_INVITE to code,
                 FIELD_MEMBERS to listOf(mapOf(FIELD_UID to uid, FIELD_NAME to displayName)),
+                // Flat uid array mirrored from members so security rules can
+                // check membership (rules can't inspect arrays of maps).
+                FIELD_MEMBER_UIDS to listOf(uid),
             ),
         ).awaitTask()
         identityRepository.setPactId(docRef.id)
@@ -92,8 +95,10 @@ class FirestorePactGateway(
         val doc = snap.documents.firstOrNull()
             ?: throw NoSuchElementException("No pact found for invite code")
         doc.reference.update(
-            FIELD_MEMBERS,
-            FieldValue.arrayUnion(mapOf(FIELD_UID to uid, FIELD_NAME to displayName)),
+            mapOf(
+                FIELD_MEMBERS to FieldValue.arrayUnion(mapOf(FIELD_UID to uid, FIELD_NAME to displayName)),
+                FIELD_MEMBER_UIDS to FieldValue.arrayUnion(uid),
+            ),
         ).awaitTask()
         identityRepository.setPactId(doc.id)
         val base = doc.toPact() ?: error("Pact document could not be parsed")
@@ -111,7 +116,12 @@ class FirestorePactGateway(
             ?.filter { it[FIELD_UID] == uid }
             .orEmpty()
         if (mine.isNotEmpty()) {
-            docRef.update(FIELD_MEMBERS, FieldValue.arrayRemove(*mine.toTypedArray())).awaitTask()
+            docRef.update(
+                mapOf(
+                    FIELD_MEMBERS to FieldValue.arrayRemove(*mine.toTypedArray()),
+                    FIELD_MEMBER_UIDS to FieldValue.arrayRemove(uid),
+                ),
+            ).awaitTask()
         }
         identityRepository.setPactId(null)
     }
@@ -266,6 +276,7 @@ class FirestorePactGateway(
         const val FIELD_NAME = "name"
         const val FIELD_INVITE = "inviteCode"
         const val FIELD_MEMBERS = "members"
+        const val FIELD_MEMBER_UIDS = "memberUids"
         const val FIELD_UID = "uid"
         const val FIELD_OWNER_UID = "ownerUid"
         const val FIELD_OWNER_NAME = "ownerName"

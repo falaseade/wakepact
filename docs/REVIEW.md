@@ -15,8 +15,9 @@ Every source and build file read, newest first, before any tests were written.
 | 5 | `feature/alarms/AlarmsScreen.kt:271` | Minor | The alarm `Switch` has no own `contentDescription`; screen readers announce only the row text. Mitigated because the card text (time, label, next-fire) is adjacent. | Logged — roadmap note: a11y pass making the whole row `toggleable()` with proper semantics instead of a bare Switch. |
 | 6 | `feature/alarms/AlarmsViewModel.kt:84` | Minor | Rapid double-toggle races `setEnabled` + scheduler calls; last write wins. No corruption (both sides idempotent per alarm id), worst case one redundant schedule/cancel pair. | Accepted — documented here; not worth serializing per-alarm for MVP. |
 | 7 | `ring/RingService.kt:91` | Minor | Residual race in the overlap fix: a sticky restart that finds **no** active record (service about to stop) plus a simultaneous real fire treats the fire as an overlap — occurrence skipped, alarm re-armed. Window ≈ one Room query (~ms) and requires the service to have been killed mid-nothing. | Accepted — window negligible; queuing machinery would outweigh the risk. |
+| 8 | `data/pact/FirestorePactGateway.kt` | Minor | Pact documents stored membership only as `members: [{uid, name}]` — Firestore security rules cannot inspect arrays of maps, so buddy-only access to `ringEvents` could not be enforced server-side. Found while writing the rules for `docs/FIREBASE_SETUP.md` (Phase 8). | **Fixed (ship phase).** Gateway now mirrors a flat `memberUids: [uid]` array on create/join/leave (single-update writes, so the two arrays cannot drift); the published rules gate `ringEvents` reads/writes on it. |
 
-Summary: 0 blockers, 1 major, 6 minors — all blockers/majors resolved.
+Summary: 0 blockers, 1 major, 7 minors — all blockers/majors resolved.
 
 ## Verified-clean sweeps
 
