@@ -1,4 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WakePact</string>
+
+    <!-- Alarms list -->
+    <string name="cd_add_alarm">Add alarm</string>
+    <string name="cd_open_pact">Open pact</string>
+    <string name="no_alarms">No alarms yet. Tap + to set your first wake pact.</string>
+    <string name="repeat_once">Once</string>
+    <string name="in_hours_minutes">in %1$d h %2$d min</string>
+    <string name="in_minutes">in %1$d min</string>
+    <string name="select_alarm_placeholder">Select an alarm, or add a new one</string>
+    <string name="notif_permission_rationale">Allow notifications so the alarm can take over the screen when it rings.</string>
+    <string name="notif_permission_button">Allow notifications</string>
+
+    <!-- Editor -->
+    <string name="editor_title_new">New alarm</string>
+    <string name="editor_title_edit">Edit alarm</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_delete_alarm">Delete alarm</string>
+    <string name="label_hint">Label</string>
+    <string name="step_goal_label">Wake-proof steps: %1$d</string>
+    <string name="grace_label">Pact grace window: %1$s</string>
+    <string name="max_ring_label">Max ring time: %1$d min</string>
+    <string name="save">Save</string>
+    <string-array name="week_days_short">
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+        <item>S</item>
+    </string-array>
+
+    <!-- Ring -->
+    <string name="ring_channel_name">Alarms</string>
+    <string name="ring_channel_description">Full-screen ringing alarms</string>
+    <string name="ring_notification_ringing">Alarm ringing — walk to prove you\'re up</string>
+    <string name="ring_notification_pending">You\'re up — waiting for your pact to switch it off</string>
+    <string name="ring_walk_instruction">Walk it off</string>
+    <string name="ring_walk_hint">Take steady steps. Shaking the phone won\'t count.</string>
+    <string name="ring_steps_progress">%1$d / %2$d</string>
+    <string name="ring_proof_done_live">You\'re up! Your pact has been asked to switch it off.</string>
+    <string name="ring_auto_clear_in">Auto-clears in %1$s</string>
+    <string name="ring_deactivated_by">Switched off by %1$s</string>
+    <string name="ring_deactivated_solo">Switched off — you proved you\'re up</string>
+    <string name="ring_auto_cleared">Auto-cleared — your pact stayed quiet, but you did the work</string>
+    <string name="ring_missed">Missed — the alarm gave up. Your pact will see this.</string>
+    <string name="ring_done">Done</string>
+
+    <!-- Pact -->
+    <string name="pact_title">Pact</string>
+    <string name="display_name_label">Your name</string>
+    <string name="pact_solo_card">Solo mode: live pacts need a Firebase project. Alarms and wake-proof work fully offline — see docs/FIREBASE_SETUP.md to go social.</string>
+    <string name="create_pact_title">Start a pact</string>
+    <string name="pact_name_label">Pact name</string>
+    <string name="create_pact_button">Create</string>
+    <string name="join_pact_title">Join a pact</string>
+    <string name="invite_code_label">Invite code</string>
+    <string name="join_pact_button">Join</string>
+    <string name="invite_code_share">Invite code — long-press to copy</string>
+    <string name="members_title">Members</string>
+    <string name="leave_pact">Leave pact</string>
+    <string name="pending_title">Needs you</string>
+    <string name="pending_ringing">%1$s\'s alarm is ringing — they\'re walking it off</string>
+    <string name="pending_proof">%1$s walked it off — confirm they\'re awake</string>
+    <string name="deactivate_button">Switch off</string>
+    <string name="feed_title">Recent rings</string>
+    <string name="feed_empty">No rings yet.</string>
+    <string name="feed_ringing">ringing now</string>
+    <string name="feed_proof">proof done, waiting for the pact</string>
+    <string name="feed_deactivated">switched off</string>
+    <string name="feed_deactivated_by">switched off by %1$s</string>
+    <string name="feed_auto_cleared">auto-cleared after proof</string>
+    <string name="feed_missed">slept through</string>
+
+    <!-- Messages -->
+    <string name="msg_offline">Couldn\'t reach the pact server — try again when online.</string>
+    <string name="msg_create_failed">Couldn\'t create the pact.</string>
+    <string name="msg_join_failed">Couldn\'t join — check the code.</string>
+    <string name="msg_left">You left the pact.</string>
+    <string name="msg_deactivated">Switched off for your pact mate. Good morning!</string>
+    <string name="msg_name_saved">Name saved.</string>
 </resources>
