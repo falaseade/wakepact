@@ -73,6 +73,7 @@ class RingService : Service() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private var session: RingSession? = null
+    private var startedAlarmId: Long? = null // null until the first start command
     private var mediaPlayer: MediaPlayer? = null
     private var vibrator: Vibrator? = null
     private var wakeLock: PowerManager.WakeLock? = null
@@ -90,11 +91,30 @@ class RingService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Promote to foreground immediately — this must precede any suspend work.
         startForegroundWithNotification(getString(R.string.ring_notification_ringing))
-        if (session == null) {
-            val alarmId = intent?.getLongExtra(EXTRA_ALARM_ID, -1L) ?: -1L
+        val alarmId = intent?.getLongExtra(EXTRA_ALARM_ID, -1L) ?: -1L
+        val started = startedAlarmId
+        if (started == null) {
+            startedAlarmId = alarmId
             scope.launch { begin(alarmId) }
+        } else if (alarmId != -1L && alarmId != started && alarmId != session?.alarmId) {
+            // A different alarm fired while this ring is active (REVIEW #1).
+            scope.launch { handleOverlappingAlarm(alarmId) }
         }
         return START_STICKY
+    }
+
+    /**
+     * MVP overlap policy: the live ring keeps the stage; the newcomer skips
+     * this occurrence but must not silently die — re-arm a repeating alarm
+     * (normally done in [begin]) or switch a one-shot off.
+     */
+    private suspend fun handleOverlappingAlarm(alarmId: Long) {
+        val alarm = alarmRepository.alarm(alarmId) ?: return
+        Timber.w(
+            "Alarm %d fired while ring %s is active — skipping this occurrence",
+            alarmId, session?.recordId ?: "(starting)",
+        )
+        if (alarm.isRepeating) scheduler.scheduleNext(alarm) else alarmRepository.setEnabled(alarm.id, false)
     }
 
     /** Builds (or resumes) the session and launches every ring subsystem. */

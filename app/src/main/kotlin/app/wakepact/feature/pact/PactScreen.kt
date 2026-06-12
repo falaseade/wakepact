@@ -2,6 +2,8 @@ package app.wakepact.feature.pact
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -243,6 +245,7 @@ private fun JoinPactCard(busy: Boolean, onJoinPact: (String) -> Unit) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PactCard(state: PactUiState, onLeavePact: () -> Unit) {
     val pact = state.pact ?: return
@@ -266,7 +269,10 @@ private fun PactCard(state: PactUiState, onLeavePact: () -> Unit) {
                 text = stringResource(R.string.members_title),
                 style = MaterialTheme.typography.titleMedium,
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
                 pact.members.forEach { member ->
                     AssistChip(onClick = {}, label = { Text(member.name) })
                 }

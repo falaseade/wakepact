@@ -41,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.wakepact.R
 import app.wakepact.core.ui.WakeIcons
@@ -292,6 +293,12 @@ private fun NotificationPermissionBanner() {
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED,
         )
+    }
+    // Re-check on resume: the user may grant via system Settings, not our launcher.
+    LifecycleResumeEffect(Unit) {
+        granted = ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
+            PackageManager.PERMISSION_GRANTED
+        onPauseOrDispose { }
     }
     if (granted) return
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {

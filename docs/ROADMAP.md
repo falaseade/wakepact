@@ -9,6 +9,9 @@ Alarms (exact, repeating, reboot-safe, full-screen) · walk-N-steps wake-proof w
 3. **Plain-dismiss preference for solo users** who explicitly want a normal alarm.
 4. **Streaks & per-member stats** on the Pact screen (data already in the feed).
 5. **Multiple pacts** and per-alarm pact selection.
+6. **Alarm queueing for overlaps** — today a second alarm firing mid-ring skips its occurrence (re-armed, logged; see REVIEW #1); queue and chain-ring instead.
+7. **Two-pane chrome polish** — single shared top bar in the ≥840 dp layout instead of nested editor Scaffold (REVIEW #4).
+8. **Accessibility pass** — alarm rows become `toggleable()` with full semantics; TalkBack walkthrough of the ring screen (REVIEW #5).
 
 ## Later — v2 ideas
 - Mission variety: photo-of-registered-object (on-device matching), typing drills, sunlight-lux check.
