@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder launcher glyph: alarm bell with a pact "spark". Replace in Android Studio when branding. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group android:scaleX="0.5" android:scaleY="0.5" android:pivotX="54" android:pivotY="54">
+        <path
+            android:fillColor="#FFB74D"
+            android:pathData="M54,28c-12.7,0 -23,10.3 -23,23v14l-6,8v3h58v-3l-6,-8V51c0,-12.7 -10.3,-23 -23,-23z" />
+        <path
+            android:fillColor="#FFB74D"
+            android:pathData="M47,79c0,3.9 3.1,7 7,7s7,-3.1 7,-7H47z" />
+        <path
+            android:fillColor="#FFE0B2"
+            android:pathData="M76,30m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0" />
+    </group>
+</vector>

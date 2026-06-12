@@ -1,0 +1,27 @@
+# Grouped weekly dependency PRs. Coupled versions move together so a bot can
+# never bump half of a set (see references/compatibility-matrix.md rules).
+# Never auto-merge: CI green + human merge only.
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      kotlin-coupled:
+        patterns:
+          - "org.jetbrains.kotlin*"
+          - "com.google.devtools.ksp"
+      android-build:
+        patterns:
+          - "com.android.*"
+      androidx:
+        patterns:
+          - "androidx.*"
+      everything-else:
+        patterns:
+          - "*"
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

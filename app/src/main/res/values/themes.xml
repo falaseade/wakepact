@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Covers only the pre-Compose splash instant; real theming is Compose Material 3. -->
+    <style name="Theme.App" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
