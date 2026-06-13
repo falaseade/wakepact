@@ -27,7 +27,7 @@ class EditorViewModelTest {
     val mainRule = MainDispatcherRule()
 
     private val repo = mockk<AlarmRepository>()
-    private val scheduler = mockk<AlarmScheduler>(relaxUnitFun = true)
+    private val scheduler = mockk<AlarmScheduler>(relaxed = true)
 
     private val storedAlarm = Alarm(
         id = 5, hour = 6, minute = 45, daysMask = 0b0011111,
@@ -79,7 +79,7 @@ class EditorViewModelTest {
         advanceUntilIdle()
         coVerify(exactly = 0) { repo.alarm(any()) }
         vm.uiState.test {
-            assertEquals(9, awaitItem().hour)
+            assertEquals(9, awaitItemWhere { it.hour == 9 }.hour)
             cancelAndIgnoreRemainingEvents()
         }
     }

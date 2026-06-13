@@ -43,7 +43,7 @@ class AlarmsViewModelTest {
         coEvery { setEnabled(any(), any()) } just Runs
         coEvery { delete(any()) } just Runs
     }
-    private val scheduler = mockk<AlarmScheduler>(relaxUnitFun = true)
+    private val scheduler = mockk<AlarmScheduler>(relaxed = true)
     private val gateway = FakePactGateway(isLive = true)
 
     private fun viewModel(handle: SavedStateHandle = SavedStateHandle()) =

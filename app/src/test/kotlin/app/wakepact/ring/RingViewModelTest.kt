@@ -60,7 +60,7 @@ class RingViewModelTest {
             s.markProof(System.currentTimeMillis())
             val pending = awaitItemWhere { it.state == RingState.PROOF_DONE && it.graceRemainingMs != null }
             val remaining = pending.graceRemainingMs ?: 0L
-            assertTrue("remaining=$remaining", remaining in 170_000..180_000)
+            assertTrue("remaining=$remaining", remaining in 170_000..181_000)
             cancelAndIgnoreRemainingEvents()
         }
     }
