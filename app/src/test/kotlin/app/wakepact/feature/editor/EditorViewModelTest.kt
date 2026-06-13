@@ -126,7 +126,7 @@ class EditorViewModelTest {
         assertTrue(savedAlarm.captured.enabled)
         assertEquals(6, savedAlarm.captured.hour)
         val scheduled = slot<Alarm>()
-        verify { scheduler.scheduleNext(capture(scheduled)) }
+        verify { scheduler.scheduleNext(capture(scheduled), any()) }
         assertEquals(42L, scheduled.captured.id)
     }
 

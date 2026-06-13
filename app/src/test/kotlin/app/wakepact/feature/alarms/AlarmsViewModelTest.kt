@@ -94,7 +94,7 @@ class AlarmsViewModelTest {
         advanceUntilIdle()
         coVerify { repo.setEnabled(2L, true) }
         val scheduled = slot<Alarm>()
-        verify { scheduler.scheduleNext(capture(scheduled)) }
+        verify { scheduler.scheduleNext(capture(scheduled), any()) }
         assertEquals(2L, scheduled.captured.id)
         assertTrue(scheduled.captured.enabled)
     }
