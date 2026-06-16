@@ -25,8 +25,14 @@ Alarms (exact, repeating, reboot-safe, full-screen) · walk-N-steps wake-proof w
 - Cross-platform pacts (iOS client, shared Firestore schema already neutral).
 - "Alarm roulette": a random pact member's voice note plays as your alarm sound (YouUp-style, but with our verification loop).
 
-## Monetization options considered
-- **Freemium**: free = 1 pact, 3 alarms, steps mission; Pro (one-off £6.99 or £1.49/mo) = unlimited alarms, QR/photo missions, stats, widgets.
-- **Group plan**: one member pays, whole pact unlocked (fits the social DNA).
-- **Cosmetics**: sound packs, feed reactions, app icons.
-- Ads rejected: an ad on the ring screen at 6 a.m. is product sabotage.
+## Monetization — decided (see [`PRODUCT_EDGE.md`](PRODUCT_EDGE.md), 2026-06-16)
+
+**The call: be the anti-Alarmy. Keep the social pact free forever; monetize capability, never the social loop.** Alarmy's loudest reviews are about an aggressive subscription, ads at wake time, and missions that used to be free getting paywalled — so a fair *one-time* price is itself the positioning. The pact requires inviting a friend, so it *is* the growth engine; gating it would throttle the one thing that makes WakePact spread (Galarm proves free social scales).
+
+- **Free forever**: unlimited basic alarms, the step mission, **one pact**, solo mode, the feed. No ads, ever. (Note: do **not** cap alarm count — that's the petty Alarmy move; gate capability instead.)
+- **WakePact Pro — one-time £6.99 / $7.99** (or £1.49/mo for the subscription-minded): QR/photo/math missions, streaks & stats, widgets, multiple pacts, custom sound packs.
+- **Pact Pro (group unlock)**: one member pays → the whole pact is unlocked. Fits the social DNA and the payer evangelizes the invite — the cleverest revenue lever.
+- **Cosmetics**: sound packs, feed reactions, app icons (fold into Pro or sell à la carte).
+- **Ads rejected**: an ad on the ring screen at 6 a.m. is product sabotage — and "no ads, ever" is a load-bearing part of the positioning.
+
+*Earlier draft (superseded): free = 1 pact + 3 alarms; the 3-alarm cap is dropped — gating alarm count annoys users and undercuts the anti-Alarmy stance.*
