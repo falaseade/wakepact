@@ -23,12 +23,15 @@ Open the file Android Studio created at the repo root (`local.properties`, alrea
 wakepact.firebase.projectId=<your-project-id>
 wakepact.firebase.applicationId=<your-mobilesdk-app-id>
 wakepact.firebase.apiKey=<your-api-key>
+# Optional — only needed for buddy push notifications (step 7):
+wakepact.firebase.senderId=<your-project-number>
 ```
 
 Where to find each (Console → ⚙ **Project settings** → **General**):
 - **projectId** — "Project ID" near the top (e.g. `wakepact-4f2a1`).
 - **applicationId** — under *Your apps*, the **App ID** (looks like `1:1234567890:android:abc123…`). In `google-services.json` it's `mobilesdk_app_id`.
 - **apiKey** — under *Your apps*, **API key** (`current_key` in the json). This is a client identifier, not a secret — real protection comes from the security rules below — but keep it out of git anyway (it already is).
+- **senderId** — the **Project number** at the top of *Project settings* (a 12-ish digit number; `project_number` in the json). Only FCM needs it; leave it out and pacts still work over live Firestore listeners — you just won't get push to a closed app.
 
 Rebuild. The Pact tab now shows live status instead of solo mode.
 
@@ -137,12 +140,36 @@ Known MVP tradeoffs (also in `docs/REVIEW.md` / roadmap): pact docs are readable
 
 Two devices (or device + emulator): create a pact on one (Pact tab → name it → **Create**), read the 6-character code aloud, join on the other. Set an alarm a minute out on device A, let it fire, walk the steps — device B's Pact tab shows the pending ring and the **Deactivate** button. Tap it; device A's countdown ends with "Deactivated by …".
 
-## v1.1 sketch: push notifications (FCM)
+## 7. Buddy push notifications (FCM) — optional but recommended
 
-Today buddies see pending rings when they open the app (Firestore live listeners). The natural next step is a heads-up push the moment a pact-mate's proof lands:
+Steps 1–6 give you a pact whose buddies see a pending ring **only while the Pact
+tab is open**. At 6 a.m. the buddy is asleep with the app closed, so the
+off-switch is out of reach — push fixes exactly that. The app ships with the
+client side already built (`PactMessagingService`, topic subscription, the
+deep-link to the Pact tab); you supply the project number and deploy one Cloud
+Function.
 
-1. Add `firebase-messaging` (already version-managed by the BoM in the catalog).
-2. A Cloud Function on `pacts/{pactId}/ringEvents/{eventId}` updates: when `state` becomes `PROOF_DONE`, send to the topic `pact-{pactId}` (members subscribe on join, unsubscribe on leave).
-3. Notification deep-links to the Pact tab with the deactivate card front and centre.
+1. **Add the sender ID** — put `wakepact.firebase.senderId=<project-number>` in
+   `local.properties` (step 2) and rebuild. This registers the app for FCM.
+2. **Upgrade to the Blaze plan** — Console → ⚙ → *Usage and billing* → *Modify
+   plan* → **Blaze**. Cloud Functions require it; this function's traffic stays
+   far inside the free monthly allowance (a friend group is a few invocations a
+   day), and FCM sends are free.
+3. **Deploy the function** (full steps in [`../functions/README.md`](../functions/README.md)):
+   ```bash
+   npm install -g firebase-tools && firebase login
+   cd functions && npm install && cd ..
+   firebase use <your-project-id>
+   firebase deploy --only functions
+   ```
+   `notifyPactOnProof` fires on the `RINGING → PROOF_DONE` edge of a ring event
+   and sends a data-only message to the topic `pact-{pactId}`. Each device
+   subscribes to its pact's topic automatically (on join, and re-subscribes after
+   a token refresh); the owner's own device suppresses the push locally
+   (`PactPushPolicy`), so only the buddies are woken.
+4. **Grant notifications** — buddies must allow notifications (Android 13+ prompts
+   on first alarm save). Without the grant, push is silently skipped and the
+   in-app Pact card still works.
 
-Roadmap item 1 in `docs/ROADMAP.md` — a good first iteration session.
+Verify with `firebase functions:log` — a real proof should log `Buddy push sent`
+and chime a subscribed buddy's phone. Roadmap item 1 in `docs/ROADMAP.md`.

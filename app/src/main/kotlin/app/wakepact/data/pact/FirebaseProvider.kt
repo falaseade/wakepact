@@ -23,6 +23,9 @@ class FirebaseProvider @Inject constructor(
         val projectId: String? = BuildConfig.FIREBASE_PROJECT_ID
         val applicationId: String? = BuildConfig.FIREBASE_APP_ID
         val apiKey: String? = BuildConfig.FIREBASE_API_KEY
+        // Sender ID (project number) is optional: it only unlocks FCM buddy push.
+        // Without it Firestore/Auth still work, so don't gate solo-vs-live on it.
+        val senderId: String? = BuildConfig.FIREBASE_SENDER_ID
         if (projectId.isNullOrBlank() || applicationId.isNullOrBlank() || apiKey.isNullOrBlank()) {
             Timber.i("Firebase not configured — WakePact running in solo mode")
             null
@@ -35,6 +38,8 @@ class FirebaseProvider @Inject constructor(
                             .setProjectId(projectId)
                             .setApplicationId(applicationId)
                             .setApiKey(apiKey)
+                            // Required for FCM registration; harmless when blank.
+                            .apply { if (!senderId.isNullOrBlank()) setGcmSenderId(senderId) }
                             .build(),
                     )
             }.onFailure {

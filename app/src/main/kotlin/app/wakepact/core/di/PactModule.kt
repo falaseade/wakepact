@@ -2,10 +2,13 @@ package app.wakepact.core.di
 
 import app.wakepact.data.alarm.AlarmRepository
 import app.wakepact.data.identity.IdentityRepository
+import app.wakepact.data.pact.FcmPactMessaging
 import app.wakepact.data.pact.FirebaseProvider
 import app.wakepact.data.pact.FirestorePactGateway
 import app.wakepact.data.pact.LocalPactGateway
+import app.wakepact.data.pact.NoOpPactMessaging
 import app.wakepact.data.pact.PactGateway
+import app.wakepact.data.pact.PactMessaging
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,4 +36,10 @@ object PactModule {
             LocalPactGateway(identityRepository, alarmRepository)
         }
     }
+
+    /** FCM topic membership when Firebase is configured; a no-op in solo mode. */
+    @Provides
+    @Singleton
+    fun providePactMessaging(firebaseProvider: FirebaseProvider): PactMessaging =
+        if (firebaseProvider.app != null) FcmPactMessaging() else NoOpPactMessaging
 }

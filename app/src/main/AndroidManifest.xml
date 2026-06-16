@@ -56,6 +56,16 @@
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
 
+        <!-- Buddy push (optional; only delivers when a Firebase project + sender
+             ID are configured). Data-only messages handled in onMessageReceived. -->
+        <service
+            android:name=".data.pact.PactMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <receiver
             android:name=".alarmkit.AlarmReceiver"
             android:exported="false" />

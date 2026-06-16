@@ -33,6 +33,9 @@ android {
         buildConfigField("String", "FIREBASE_PROJECT_ID", firebaseProp("wakepact.firebase.projectId"))
         buildConfigField("String", "FIREBASE_APP_ID", firebaseProp("wakepact.firebase.applicationId"))
         buildConfigField("String", "FIREBASE_API_KEY", firebaseProp("wakepact.firebase.apiKey"))
+        // Project number (a.k.a. GCM/messaging sender ID): only needed for FCM buddy push.
+        // Absent -> push is off, but Firestore-listener pacts still work fully.
+        buildConfigField("String", "FIREBASE_SENDER_ID", firebaseProp("wakepact.firebase.senderId"))
     }
 
     buildTypes {
@@ -83,6 +86,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.messaging)
 
     implementation(libs.timber)
 

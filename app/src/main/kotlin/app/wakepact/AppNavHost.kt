@@ -1,6 +1,7 @@
 package app.wakepact
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -20,8 +21,18 @@ data class EditorDest(val alarmId: Long)
 object PactDest
 
 @Composable
-fun AppNavHost() {
+fun AppNavHost(
+    openPactSignal: Boolean = false,
+    onPactConsumed: () -> Unit = {},
+) {
     val navController = rememberNavController()
+    // A buddy-push tap deep-links straight to the Pact tab.
+    LaunchedEffect(openPactSignal) {
+        if (openPactSignal) {
+            navController.navigate(PactDest) { launchSingleTop = true }
+            onPactConsumed()
+        }
+    }
     NavHost(navController = navController, startDestination = AlarmsDest) {
         composable<AlarmsDest> {
             AlarmsRoute(

@@ -4,7 +4,7 @@
 Alarms (exact, repeating, reboot-safe, full-screen) · walk-N-steps wake-proof with anti-spoof cadence rules and permission-free fallback · one Pact per user with invite codes · live remote deactivation via Firestore listeners · grace-window auto-clear · missed-alarm feed records · solo mode with zero backend setup · Material 3, dark theme, foldable layouts.
 
 ## Next — v1.1 candidates (ordered by value/effort)
-1. **Buddy push notifications** — FCM + a small Cloud Function on `ringEvents` writes, so a pact member's phone chimes even with the app closed. Highest-impact missing piece; needs `google-services.json` and a deployed function (docs/FIREBASE_SETUP.md sketches it).
+1. ~~**Buddy push notifications**~~ — **shipped (2026-06-16).** FCM + a Cloud Function (`functions/notifyPactOnProof`) on the `RINGING → PROOF_DONE` edge sends to the topic `pact-{pactId}`; the client subscribes on join, suppresses the owner's own push (`PactPushPolicy`), and deep-links the tap to the Pact tab. Setup: a project number (`senderId`) + a Blaze-plan function deploy (docs/FIREBASE_SETUP.md §7, functions/README.md). Closes the "core loop only works with the app open" gap from PRODUCT_EDGE.md.
 2. **QR/barcode mission** — at setup, scan any barcode in the house (shampoo bottle, cereal box); at alarm time you must walk to it and re-scan. Strongest anti-spoof; CameraX + ML Kit bundled barcode model.
 3. **Plain-dismiss preference for solo users** who explicitly want a normal alarm.
 4. **Streaks & per-member stats** on the Pact screen (data already in the feed).

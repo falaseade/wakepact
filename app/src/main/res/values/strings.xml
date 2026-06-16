@@ -49,6 +49,14 @@
     <string name="ring_missed">Missed — the alarm gave up. Your pact will see this.</string>
     <string name="ring_done">Done</string>
 
+    <!-- Buddy push -->
+    <string name="pact_channel_name">Pact alerts</string>
+    <string name="pact_channel_description">When a pact-mate is up and needs you to switch their alarm off</string>
+    <string name="push_proof_title">%1$s is up!</string>
+    <string name="push_proof_body">Tap to switch their alarm off.</string>
+    <string name="push_proof_body_labeled">Tap to switch off \"%1$s\".</string>
+    <string name="push_buddy_fallback">A pact-mate</string>
+
     <!-- Pact -->
     <string name="pact_title">Pact</string>
     <string name="display_name_label">Your name</string>
